@@ -1,0 +1,14 @@
+.files-page .files-header { margin-bottom: 12px; }
+.files-page .muted { color: #9aa0a6; }
+
+.upload-row { display:flex; align-items:center; gap:12px; margin-bottom:16px; padding:12px; }
+.upload-form input[type="file"] { border: 1px solid var(--border); padding:8px; border-radius:8px; background: transparent; color:var(--text); }
+.upload-form input[type="text"] { padding:8px; border-radius:8px; border:1px solid var(--border); width: 260px; }
+.upload-form button { padding:8px 12px; background:#7b5fff; color:#fff; border:none; border-radius:8px; }
+
+.files-list { display:grid; gap:12px; }
+.file-item { display:flex; justify-content:space-between; align-items:center; padding:12px; border:1px solid var(--border); border-radius:10px; }
+.file-name { font-weight:600; }
+.file-meta { font-size:12px; opacity:0.75; }
+.file-actions button { padding:8px 10px; border-radius:8px; border:1px solid var(--border); background:transparent; margin-left:8px; }
+.file-actions .danger { background: #ff4d4d; color:white; border:none; }

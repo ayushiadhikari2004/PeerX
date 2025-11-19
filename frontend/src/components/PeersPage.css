@@ -1,0 +1,7 @@
+.peers-page .peers-header { margin-bottom: 12px; }
+.peers-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:12px; }
+.peer-card { padding:12px; border-radius:10px; border:1px solid var(--border); }
+.peer-name { font-weight:600; }
+.peer-ip { font-size:13px; opacity:0.85; }
+.peer-actions button { padding:8px 10px; border-radius:8px; background:transparent; border:1px solid var(--border); }
+.refresh-btn { padding:8px 12px; border-radius:8px; background:#7b5fff; color:#fff; border:none; }

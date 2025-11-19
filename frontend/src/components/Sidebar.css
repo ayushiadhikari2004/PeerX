@@ -1,0 +1,38 @@
+.sidebar {
+  width: 240px;
+  position: fixed;
+  left: 0;
+  top: 70px;
+  height: calc(100vh - 70px);
+  background: var(--sidebar-bg);
+  padding: 20px;
+  color: white;
+}
+
+.sidebar-title {
+  margin-bottom: 15px;
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.sidebar button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 10px;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 15px;
+  text-align: left;
+  border-radius: 8px;
+  transition: 0.2s;
+}
+
+.sidebar button:hover {
+  background: var(--sidebar-hover);
+}
+
+.sidebar button.active {
+  background: #7b5fff;
+}

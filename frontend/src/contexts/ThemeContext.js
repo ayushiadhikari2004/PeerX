@@ -1,52 +1,58 @@
-// ThemeContext.js
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [isDark, setIsDark] = useState(() => {
-    try {
-      const saved = localStorage.getItem("decloud_theme");
-      if (saved !== null) return saved === "dark";
-    } catch (e) {}
-    // default: follow prefers-color-scheme if available
-    if (typeof window !== "undefined" && window.matchMedia) {
-      return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const [theme, setTheme] = useState(() => {
+    // Check localStorage first
+    const saved = localStorage.getItem("decloud_theme");
+    if (saved) return saved;
+    
+    // Check system preference
+    if (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches) {
+      return "dark";
     }
-    return false;
+    
+    return "light";
   });
 
   useEffect(() => {
-    try {
-      localStorage.setItem("decloud_theme", isDark ? "dark" : "light");
-    } catch (e) {}
-    // Add or remove a class on root so CSS can react
-    if (typeof document !== "undefined") {
-      const root = document.documentElement;
-      if (isDark) root.classList.add("dark");
-      else root.classList.remove("dark");
+    // Save to localStorage
+    localStorage.setItem("decloud_theme", theme);
+    
+    // Apply theme attribute to document
+    document.documentElement.setAttribute("data-theme", theme);
+    
+    // Also add/remove dark class for compatibility
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
     }
-  }, [isDark]);
+  }, [theme]);
 
-  const toggleTheme = () => setIsDark((v) => !v);
+  const toggleTheme = () => {
+    setTheme(prevTheme => prevTheme === "light" ? "dark" : "light");
+  };
+
+  const isDark = theme === "dark";
 
   return (
-    <ThemeContext.Provider value={{ isDark, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, isDark, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
 }
 
 export function useTheme() {
-  const ctx = useContext(ThemeContext);
-  if (!ctx) {
-    // If someone uses useTheme outside provider, give fallback
+  const context = useContext(ThemeContext);
+  if (!context) {
+    // Fallback if used outside provider
     return {
+      theme: "light",
       isDark: false,
-      toggleTheme: () => {
-        if (typeof document !== "undefined") document.documentElement.classList.toggle("dark");
-      },
+      toggleTheme: () => {},
     };
   }
-  return ctx;
+  return context;
 }

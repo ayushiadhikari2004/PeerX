@@ -9,18 +9,23 @@ import "./App.css";
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 // Axios instance for API calls
-// Detect if we're on ngrok or localhost
+// Build API base URL from environment or current host so network clients
+// (other devices on LAN) will contact the correct backend IP.
 const getAPIBaseURL = () => {
   const hostname = window.location.hostname;
-  
-  if (hostname.includes('ngrok')) {
-    return "https://YOUR-BACKEND-NGROK-URL.ngrok-free.app/api";
-  }
-  
-  return "http://localhost:5000/api";
+  const protocol = window.location.protocol || 'http:';
+
+  // If explicit env var provided, prefer it
+  if (process.env.REACT_APP_API_URL) return process.env.REACT_APP_API_URL;
+
+  // Default: use the same hostname as the browser but target backend port 5000
+  // e.g. http://192.168.1.105:3000 -> http://192.168.1.105:5000/api
+  return `${protocol}//${hostname}:5000/api`;
 };
 
-const API = axios.create({ baseURL: getAPIBaseURL() });
+const BASE_API = getAPIBaseURL();
+axios.defaults.baseURL = BASE_API;
+const API = axios.create({ baseURL: BASE_API, withCredentials: true });
 
 function AppContent() {
   const { toggleTheme, isDark } = useTheme();

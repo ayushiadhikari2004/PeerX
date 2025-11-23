@@ -31,33 +31,32 @@ const NODE_ENV = process.env.NODE_ENV || "development";
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
-app.use(cors({
+// CORS configuration
+// In development, reflect the incoming origin and allow credentials so
+// LAN devices and dev tools can access the API. In production keep the
+// more restrictive check against FRONTEND_URL.
+if (NODE_ENV === 'development') {
+  app.use(cors({
+    origin: true, // reflect request origin
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+} else {
+  app.use(cors({
     origin: function(origin, callback) {
-        // Allow requests with no origin (like mobile apps, Postman, curl)
-        if (!origin) return callback(null, true);
-        
-        // Allow localhost
-        if (origin.includes('localhost') || origin.includes('127.0.0.1')) {
-            return callback(null, true);
-        }
-        
-        // Allow any IP on local network (192.168.x.x, 10.x.x.x, 172.16-31.x.x)
-        const localIPPattern = /^https?:\/\/(192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3})(:\d+)?$/;
-        
-        if (localIPPattern.test(origin)) {
-            return callback(null, true);
-        }
-        
-        // Check against allowed URLs from .env
-        const allowedOrigins = FRONTEND_URL.split(',').map(u => u.trim());
-        if (allowedOrigins.indexOf(origin) !== -1) {
-            return callback(null, true);
-        }
-        
-        callback(new Error('Not allowed by CORS'));
+      if (!origin) return callback(null, true);
+      if (origin.includes('localhost') || origin.includes('127.0.0.1')) return callback(null, true);
+      const localIPPattern = /^https?:\/\/(192\.168\.\d{1,3}\.\d{1,3}|10\.\d{1,3}\.\d{1,3}\.\d{1,3}|172\.(1[6-9]|2[0-9]|3[0-1])\.\d{1,3}\.\d{1,3})(:\d+)?$/;
+      if (localIPPattern.test(origin)) return callback(null, true);
+      const allowedOrigins = FRONTEND_URL.split(',').map(u => u.trim());
+      if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+      console.warn('Blocked CORS origin:', origin);
+      callback(new Error('Not allowed by CORS'));
     },
-    credentials: true
-}));
+    credentials: true,
+    allowedHeaders: ['Content-Type', 'Authorization']
+  }));
+}
 
 if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
 

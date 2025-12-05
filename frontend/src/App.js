@@ -879,7 +879,8 @@ function AppContent() {
                           <div className="group-meta">
                             <span>Invite Code: <code>{g.inviteCode}</code></span>
                             <span>• {g.memberCount} member{g.memberCount !== 1 ? 's' : ''}</span>
-                            {g.isCreator && <span className="creator-badge">• Creator</span>}
+                            {g.isCreator && <span className="creator-badge">• 👑 Admin</span>}
+                            {!g.isCreator && g.role && <span className="member-badge">• 👤 {g.role}</span>}
                           </div>
                         </div>
                         <div className="group-item-actions">

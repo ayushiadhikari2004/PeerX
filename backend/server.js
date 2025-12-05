@@ -166,6 +166,7 @@ async function ensureNetworkGroup() {
         encryptionKey,
         inviteCode: "NETWORK",
         members: [],
+        isPrivate: false,
         isAutoGroup: true
       });
       console.log("✅ Network sharing group created");
@@ -378,8 +379,22 @@ app.get("/api/auth/me", auth, async (req, res) => {
 // Auto-join network group
 app.post("/api/groups/join-network", auth, async (req, res) => {
   try {
-    const networkGroup = await Group.findOne({ name: "__NETWORK_SHARE__" });
-    if (!networkGroup) return res.status(404).json({ error: "Network group not found" });
+    let networkGroup = await Group.findOne({ name: "__NETWORK_SHARE__" });
+    
+    if (!networkGroup) {
+      // Create network group if it doesn't exist
+      const encryptionKey = crypto.randomBytes(32).toString("hex");
+      networkGroup = await Group.create({
+        name: "__NETWORK_SHARE__",
+        description: "Automatic group for local network sharing",
+        encryptionKey,
+        inviteCode: "NETWORK",
+        members: [],
+        isPrivate: false,
+        isAutoGroup: true
+      });
+      console.log("✅ Network sharing group created");
+    }
 
     // Check if already member
     const isMember = networkGroup.members.some(m => m.userId.toString() === req.user.userId);
@@ -398,10 +413,13 @@ app.post("/api/groups/join-network", auth, async (req, res) => {
       group: {
         id: networkGroup._id.toString(),
         _id: networkGroup._id,
-        name: "Network Share",
-        description: "Share files with all devices on this network",
+        name: networkGroup.name,
+        description: networkGroup.description,
         inviteCode: networkGroup.inviteCode,
-        memberCount: networkGroup.members.length
+        isPrivate: false,
+        memberCount: networkGroup.members.length,
+        role: "member",
+        isCreator: false
       }
     });
   } catch (err) {
@@ -451,19 +469,25 @@ app.get("/api/groups", auth, async (req, res) => {
       .populate("creator", "username")
       .sort({ createdAt: -1 });
     
-    // Add member count to each group
-    const groupsWithCount = groups.map(g => ({
-      id: g._id.toString(),
-      _id: g._id,
-      name: g.name,
-      description: g.description,
-      inviteCode: g.inviteCode,
-      isPrivate: g.isPrivate,
-      creator: g.creator,
-      isCreator: g.creator._id.toString() === req.user.userId,
-      memberCount: g.members.length,
-      createdAt: g.createdAt
-    }));
+    // Add member count and role to each group
+    const groupsWithCount = groups.map(g => {
+      const member = g.members.find(m => m.userId.toString() === req.user.userId);
+      const userRole = member ? member.role : 'member';
+      
+      return {
+        id: g._id.toString(),
+        _id: g._id,
+        name: g.name,
+        description: g.description,
+        inviteCode: g.inviteCode,
+        isPrivate: g.isPrivate,
+        creator: g.creator,
+        isCreator: g.creator ? g.creator._id.toString() === req.user.userId : false,
+        memberCount: g.members.length,
+        role: userRole,
+        createdAt: g.createdAt
+      };
+    });
     
     res.json(groupsWithCount);
   } catch (err) {

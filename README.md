@@ -1,8 +1,8 @@
-# 🌐 DeCloud - Decentralized Cloud Storage
+# 🌐 PersonalSpace - Decentralized Cloud Storage
 
 > A secure, peer-to-peer file sharing platform with end-to-end encryption for local networks.
 
-DeCloud is a **decentralized cloud storage platform** that enables secure file sharing across devices on the same local network. With automatic peer discovery, end-to-end encryption, and instant network-wide file sharing, DeCloud transforms your local network into a private cloud.
+PersonalSpace is a **decentralized cloud storage platform** that enables secure file sharing across devices on the same local network. With automatic peer discovery, end-to-end encryption, and instant network-wide file sharing, PersonalSpace transforms your local network into a private cloud.
 
 ### ✨ Key Features
 
@@ -29,8 +29,8 @@ DeCloud is a **decentralized cloud storage platform** that enables secure file s
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/shaileshjukaria/decloud.git
-   cd decloud
+   git clone https://github.com/shaileshjukaria/personalspace.git
+   cd personalspace
    ```
 
 2. **Install dependencies**
@@ -49,7 +49,7 @@ DeCloud is a **decentralized cloud storage platform** that enables secure file s
    Create a `.env` file in the root directory:
    ```env
    PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/decloud
+   MONGODB_URI=mongodb://localhost:27017/personalspace
    JWT_SECRET=your-super-secret-key-change-in-production
    JWT_EXPIRES_IN=7d
    FRONTEND_URL=http://localhost:3000,http://YOUR_LOCAL_IP:3000
@@ -82,7 +82,7 @@ DeCloud is a **decentralized cloud storage platform** that enables secure file s
    ✅ MongoDB Connected
    🔍 Peer discovery active (UDP 5001)
    ============================================================
-   🌐 DeCloud Backend Running
+   🌐 PersonalSpace Backend Running
    🚀 Local:    http://localhost:5000
    🚀 Network:  http://192.168.1.X:5000
    ============================================================
@@ -93,7 +93,7 @@ DeCloud is a **decentralized cloud storage platform** that enables secure file s
    npm start
    ```
 
-7. **Access DeCloud**
+7. **Access PersonalSpace**
    - Local: `http://localhost:3000`
    - Network: `http://YOUR_IP:3000`
 
@@ -131,9 +131,9 @@ FRONTEND_URL=http://localhost:3000,http://192.168.1.105:3000
 **Windows:**
 ```powershell
 # Run as Administrator
-New-NetFirewallRule -DisplayName "DeCloud-3000" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow
-New-NetFirewallRule -DisplayName "DeCloud-5000" -Direction Inbound -LocalPort 5000 -Protocol TCP -Action Allow
-New-NetFirewallRule -DisplayName "DeCloud-5001" -Direction Inbound -LocalPort 5001 -Protocol UDP -Action Allow
+New-NetFirewallRule -DisplayName "PersonalSpace-3000" -Direction Inbound -LocalPort 3000 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "PersonalSpace-5000" -Direction Inbound -LocalPort 5000 -Protocol TCP -Action Allow
+New-NetFirewallRule -DisplayName "PersonalSpace-5001" -Direction Inbound -LocalPort 5001 -Protocol UDP -Action Allow
 ```
 
 **Mac:**
@@ -161,7 +161,7 @@ http://192.168.1.105:3000
 
 ### 1. Account Creation
 
-- Navigate to DeCloud in your browser
+- Navigate to PersonalSpace in your browser
 - Click "Register"
 - Enter username, email, and password
 - You're automatically logged in!
@@ -295,7 +295,7 @@ http://192.168.1.105:3000
 ## 📁 Project Structure
 
 ```
-decloud/
+personalspace/
 ├── server.js                 # Backend entry point
 ├── .env                      # Environment variables
 ├── package.json              # Backend dependencies
@@ -331,9 +331,9 @@ decloud/
 ### Environment Variables
 
 | Variable | Description | Default |
-|----------|-------------|---------|
+|----------|-------------|---------||
 | `PORT` | Backend server port | `5000` |
-| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/decloud` |
+| `MONGODB_URI` | MongoDB connection string | `mongodb://localhost:27017/personalspace` |
 | `JWT_SECRET` | Secret key for JWT signing | **Change in production!** |
 | `JWT_EXPIRES_IN` | JWT token expiration | `7d` |
 | `FRONTEND_URL` | Allowed frontend origins (comma-separated) | `http://localhost:3000` |
@@ -534,7 +534,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For support, please:
 1. Check the [Troubleshooting](#-troubleshooting) section
 2. Open an issue on GitHub
-3. Email: support@yourdecloud.com
+3. Email: support@yourpersonalspace.com
 
 ---
 
@@ -587,7 +587,7 @@ npm update
 
 <div align="center">
 
-**[⬆ back to top](#-decloud---decentralized-cloud-storage)**
+**[⬆ back to top](#-personalspace---decentralized-cloud-storage)**
 
 Made with ☕ and 💻
 

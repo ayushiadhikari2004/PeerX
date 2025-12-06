@@ -5,7 +5,7 @@ const ThemeContext = createContext();
 export function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(() => {
     // Check localStorage first
-    const saved = localStorage.getItem("decloud_theme");
+    const saved = localStorage.getItem("personalspace_theme");
     if (saved) return saved;
     
     // Check system preference
@@ -18,7 +18,7 @@ export function ThemeProvider({ children }) {
 
   useEffect(() => {
     // Save to localStorage
-    localStorage.setItem("decloud_theme", theme);
+    localStorage.setItem("personalspace_theme", theme);
     
     // Apply theme attribute to document
     document.documentElement.setAttribute("data-theme", theme);

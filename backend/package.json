@@ -1,7 +1,7 @@
 {
-  "name": "decloud-backend",
+  "name": "personalspace-backend",
   "version": "1.0.0",
-  "description": "Decentralized Cloud Storage - Backend Server",
+  "description": "PersonalSpace - Backend Server",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",

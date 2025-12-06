@@ -501,10 +501,10 @@ function AppContent() {
     return (
       <div className="auth-container">
         <div className="auth-card">
-          <h1>🌐 DeCloud</h1>
+          <h1>🌐 PersonalSpace</h1>
           <p>Decentralized Cloud with End-to-End Encryption</p>
 
-          <div className="auth-switch">
+          <div className="auth-switch">>
             <button className={isLogin ? "active" : ""} onClick={() => setIsLogin(true)}>
               Login
             </button>
@@ -991,7 +991,7 @@ function AppContent() {
               <div className="peers-grid">
                 {peers.length === 0 ? (
                   <div className="card">
-                    <p className="empty">No peers detected. Make sure other devices are running DeCloud.</p>
+                    <p className="empty">No peers detected. Make sure other devices are running PersonalSpace.</p>
                   </div>
                 ) : (
                   peers.map((p, i) => (

@@ -1,4 +1,4 @@
-# 🚀 Quick Start Guide - DeCloud Enhanced
+# 🚀 Quick Start Guide - PersonalSpace Enhanced
 
 ## Prerequisites
 - Node.js v14+
@@ -23,7 +23,7 @@ npm install
 Create `.env` in backend folder (if not exists):
 ```env
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/decloud
+MONGODB_URI=mongodb://localhost:27017/personalspace
 JWT_SECRET=your-super-secret-key-change-in-production
 JWT_EXPIRES_IN=7d
 FRONTEND_URL=http://localhost:3000

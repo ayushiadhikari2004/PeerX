@@ -4,7 +4,7 @@ import "./Footer.css";
 function Footer() {
   return (
     <footer className="footer">
-      <p>© {new Date().getFullYear()} DeCloud — Secure Decentralized Storage</p>
+      <p>© {new Date().getFullYear()} PersonalSpace — Secure Decentralized Storage</p>
     </footer>
   );
 }

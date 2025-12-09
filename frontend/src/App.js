@@ -513,8 +513,7 @@ function AppContent() {
     return (
       <div className="auth-container">
         <div className="auth-card">
-          <h1>🌐 PersonalSpace</h1>
-          <p>Decentralized Cloud with End-to-End Encryption</p>
+          <h1>🌐 PeerX</h1>
 
           <div className="auth-switch">
             <button className={isLogin ? "active" : ""} onClick={() => setIsLogin(true)}>

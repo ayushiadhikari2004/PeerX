@@ -1,7 +1,7 @@
 @echo off
 echo.
 echo ============================================
-echo   Starting DeCloud with Network Access
+echo   Starting peeX with Network Access
 echo ============================================
 echo.
 
@@ -19,16 +19,16 @@ echo Your Computer IP: %IP%
 echo.
 
 echo Starting Backend on Port 5000...
-start "DeCloud Backend" cmd /k "cd /d "%~dp0backend" && npm start"
+start "peeX Backend" cmd /k "cd /d "%~dp0backend" && npm start"
 
 timeout /t 3 /nobreak >nul
 
 echo Starting Frontend with Network Access...
-start "DeCloud Frontend" cmd /k "cd /d "%~dp0frontend" && set HOST=0.0.0.0 && npm start"
+start "peeX Frontend" cmd /k "cd /d "%~dp0frontend" && set HOST=0.0.0.0 && npm start"
 
 echo.
 echo ============================================
-echo   DeCloud Started with Network Access!
+echo   peeX Started with Network Access!
 echo ============================================
 echo.
 echo   From this computer:

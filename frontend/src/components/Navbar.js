@@ -21,7 +21,7 @@ export default function Navbar({
           <span></span>
         </button>
 
-        <h1 className="app-title">🌐 PersonalSpace</h1>
+        <h1 className="app-title">🌐 PeerX</h1>
         <input
           type="text"
           className="navbar-search"

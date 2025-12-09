@@ -1,9 +1,9 @@
-# Start DeCloud with Network Access
+# Start peeX with Network Access
 # This allows access from phones/tablets on the same WiFi network
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "  Starting DeCloud with Network Access" -ForegroundColor Cyan
+Write-Host "  Starting peeX with Network Access" -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -24,7 +24,7 @@ Write-Host ""
 
 # Check firewall
 Write-Host "Checking firewall rules..." -ForegroundColor Yellow
-$fwRule = Get-NetFirewallRule -DisplayName "DeCloud*" -ErrorAction SilentlyContinue
+$fwRule = Get-NetFirewallRule -DisplayName "peeX*" -ErrorAction SilentlyContinue
 if (-not $fwRule) {
     Write-Host "⚠️  Firewall rules not found. You may need to allow Node.js through Windows Firewall" -ForegroundColor Yellow
     Write-Host "   Run this script as Administrator to auto-configure" -ForegroundColor Gray
@@ -48,7 +48,7 @@ Start-Process powershell -ArgumentList "-NoExit", "-Command", "cd '$frontendPath
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "  DeCloud Started!" -ForegroundColor Green
+Write-Host "  peeX Started!" -ForegroundColor Green
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "📱 Access from this computer:" -ForegroundColor White

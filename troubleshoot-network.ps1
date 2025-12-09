@@ -1,8 +1,8 @@
-# DeCloud Network Access Troubleshooter
+# peeX Network Access Troubleshooter
 
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Cyan
-Write-Host "  DeCloud Network Troubleshooter" -ForegroundColor Cyan
+Write-Host "  peeX Network Troubleshooter" -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -36,7 +36,7 @@ Write-Host ""
 
 # 3. Check firewall rules
 Write-Host "3. Checking Firewall..." -ForegroundColor Yellow
-$fwRules = Get-NetFirewallRule -DisplayName "*DeCloud*" -ErrorAction SilentlyContinue
+$fwRules = Get-NetFirewallRule -DisplayName "*peeX*" -ErrorAction SilentlyContinue
 if ($fwRules) {
     Write-Host "   ✅ Firewall rules found" -ForegroundColor Green
     $fwRules | ForEach-Object { Write-Host "      - $($_.DisplayName)" -ForegroundColor Gray }
@@ -45,9 +45,9 @@ if ($fwRules) {
     Write-Host "      Creating firewall rules..." -ForegroundColor Yellow
     
     try {
-        New-NetFirewallRule -DisplayName "DeCloud Backend" -Direction Inbound -Protocol TCP -LocalPort 5000 -Action Allow -ErrorAction Stop | Out-Null
-        New-NetFirewallRule -DisplayName "DeCloud Frontend" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow -ErrorAction Stop | Out-Null
-        New-NetFirewallRule -DisplayName "DeCloud Peer Discovery" -Direction Inbound -Protocol UDP -LocalPort 5001 -Action Allow -ErrorAction Stop | Out-Null
+        New-NetFirewallRule -DisplayName "peeX Backend" -Direction Inbound -Protocol TCP -LocalPort 5000 -Action Allow -ErrorAction Stop | Out-Null
+        New-NetFirewallRule -DisplayName "peeX Frontend" -Direction Inbound -Protocol TCP -LocalPort 3000 -Action Allow -ErrorAction Stop | Out-Null
+        New-NetFirewallRule -DisplayName "peeX Peer Discovery" -Direction Inbound -Protocol UDP -LocalPort 5001 -Action Allow -ErrorAction Stop | Out-Null
         Write-Host "   ✅ Firewall rules created" -ForegroundColor Green
     } catch {
         Write-Host "   ❌ Failed to create firewall rules (need Administrator)" -ForegroundColor Red

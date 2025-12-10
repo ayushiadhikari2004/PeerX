@@ -187,8 +187,7 @@ function AppContent() {
       const res = await API.get("/peers");
       // Add mock connected peers
       const mockPeers = [
-        {
-        }
+        
       ];
       setPeers([...res.data, ...mockPeers]);
       console.log('Peers fetched:', res.data.length + mockPeers.length);

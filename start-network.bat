@@ -1,7 +1,7 @@
 @echo off
 echo.
 echo ============================================
-echo   Starting peeX with Network Access
+echo   Starting PeerX with Network Access
 echo ============================================
 echo.
 
@@ -19,16 +19,16 @@ echo Your Computer IP: %IP%
 echo.
 
 echo Starting Backend on Port 5000...
-start "peeX Backend" cmd /k "cd /d "%~dp0backend" && npm start"
+start "PeerX Backend" cmd /k "cd /d "%~dp0backend" && npm start"
 
 timeout /t 3 /nobreak >nul
 
 echo Starting Frontend with Network Access...
-start "peeX Frontend" cmd /k "cd /d "%~dp0frontend" && set HOST=0.0.0.0 && npm start"
+start "PeerX Frontend" cmd /k "cd /d "%~dp0frontend" && set HOST=0.0.0.0 && npm start"
 
 echo.
 echo ============================================
-echo   peeX Started with Network Access!
+echo   PeerX Started with Network Access!
 echo ============================================
 echo.
 echo   From this computer:

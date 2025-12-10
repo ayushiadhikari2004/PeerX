@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 // Connect to MongoDB
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/personalspace';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://adhikariayushi7_db_user:0HXxdQk5gOcgnJk7@cluster0.ift2fkv.mongodb.net/peex ';
 
 console.log('🔄 Connecting to MongoDB...');
 

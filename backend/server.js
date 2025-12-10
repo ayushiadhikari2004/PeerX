@@ -38,10 +38,14 @@ const ENCRYPTION_ALGORITHM = process.env.ENCRYPTION_ALGORITHM || "aes-256-gcm";
 const ENABLE_PEER_DISCOVERY = process.env.ENABLE_PEER_DISCOVERY === "true";
 const PEER_PORT = parseInt(process.env.PEER_PORT) || 5001;
 const NODE_ENV = process.env.NODE_ENV || "development";
+const UPLOADS_FOLDER = process.env.UPLOADS_FOLDER || "uploads";
+const UPLOADS_DIR = path.isAbsolute(UPLOADS_FOLDER)
+  ? UPLOADS_FOLDER
+  : path.join(__dirname, UPLOADS_FOLDER);
 
 // ====================== MIDDLEWARE ======================
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', express.static(UPLOADS_DIR));
 app.use('/previews', express.static('previews'));
 
 // CORS configuration
@@ -68,7 +72,7 @@ if (NODE_ENV === 'development') {
   }));
 }
 
-if (!fs.existsSync('uploads')) fs.mkdirSync('uploads');
+if (!fs.existsSync(UPLOADS_DIR)) fs.mkdirSync(UPLOADS_DIR, { recursive: true });
 if (!fs.existsSync('previews')) fs.mkdirSync('previews');
 
 app.use((req, res, next) => {
@@ -501,9 +505,11 @@ async function markFileForNetworkSharing(fileId, groupId) {
 }
 
 // Retrieve file from local storage (simplified - no peer-to-peer needed)
+const uploadPath = (filename = "") => path.join(UPLOADS_DIR, filename);
+
 async function retrieveFileFromLocal(file) {
     try {
-        const localFilePath = path.join(__dirname, "uploads", file.filename);
+        const localFilePath = uploadPath(file.filename);
         
         // Check if file exists locally
         if (fs.existsSync(localFilePath)) {
@@ -521,8 +527,8 @@ async function retrieveFileFromLocal(file) {
 // ====================== MULTER ======================
 const upload = multer({
     storage: multer.diskStorage({
-        destination: "uploads/",
-        filename: (req, file, cb) =>
+        destination: (_req, _file, cb) => cb(null, UPLOADS_DIR),
+        filename: (_req, file, cb) =>
             cb(null, Date.now() + "-" + crypto.randomBytes(6).toString("hex") + path.extname(file.originalname))
     }),
     limits: { fileSize: MAX_FILE_SIZE }
@@ -745,8 +751,9 @@ app.delete("/api/groups/:groupId/members/:userId", auth, async (req, res) => {
 
 app.post("/api/groups/join", auth, async (req, res) => {
   try {
-    const { inviteCode } = req.body;
-    const group = await Group.findOne({ inviteCode: inviteCode.toUpperCase() });
+    const inviteCode = (req.body.inviteCode || "").trim().toUpperCase();
+    if (!inviteCode) return res.status(400).json({ error: "Invite code required" });
+    const group = await Group.findOne({ inviteCode });
     if (!group) return res.status(404).json({ error: "Invalid invite code" });
 
     const isMember = group.members.some(m => m.userId.toString() === req.user.userId);
@@ -852,7 +859,7 @@ app.delete("/api/groups/:id", auth, async (req, res) => {
     
     const files = await File.find({ group: req.params.id });
     for (const file of files) {
-      const filePath = path.join(__dirname, "uploads", file.filename);
+      const filePath = uploadPath(file.filename);
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
       
       if (file.hasPreview && file.previewPath) {
@@ -911,7 +918,7 @@ app.post("/api/groups/:id/leave", auth, async (req, res) => {
     if (group.members.length === 0) {
       const files = await File.find({ group: req.params.id });
       for (const file of files) {
-        const filePath = path.join(__dirname, "uploads", file.filename);
+        const filePath = uploadPath(file.filename);
         if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
         
         await User.findByIdAndUpdate(file.owner, {
@@ -999,7 +1006,7 @@ app.delete("/api/folders/:id", auth, async (req, res) => {
             // Delete files in this folder
             const files = await File.find({ folder: folderId });
             for (const file of files) {
-                const filePath = path.join(__dirname, "uploads", file.filename);
+                const filePath = uploadPath(file.filename);
                 if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
                 
                 if (file.hasPreview && file.previewPath) {
@@ -1042,7 +1049,7 @@ app.post("/api/files/upload", auth, upload.single("file"), async (req, res) => {
       return res.status(403).json({ error: "Not a group member" });
     }
 
-    const filePath = path.join(__dirname, "uploads", req.file.filename);
+    const filePath = uploadPath(req.file.filename);
     const fileBuffer = fs.readFileSync(filePath);
 
     // Encrypt file
@@ -1262,7 +1269,7 @@ app.delete("/api/files/:id", auth, async (req, res) => {
       return res.status(403).json({ error: "Not authorized" });
     }
 
-    const filePath = path.join(__dirname, "uploads", file.filename);
+    const filePath = uploadPath(file.filename);
     if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     
     if (file.hasPreview && file.previewPath) {
@@ -1396,7 +1403,7 @@ app.post("/api/share/:linkId/download", async (req, res) => {
         }
 
         const file = shareLink.fileId;
-        const filePath = path.join(__dirname, "uploads", file.filename);
+        const filePath = uploadPath(file.filename);
         if (!fs.existsSync(filePath)) {
             return res.status(404).json({ error: "File not found on disk" });
         }
@@ -1617,7 +1624,7 @@ app.post("/api/peers/store-file", auth, upload.single("file"), async (req, res) 
 app.get("/api/peers/retrieve-file/:filename", auth, async (req, res) => {
     try {
         const { filename } = req.params;
-        const filePath = path.join(__dirname, "uploads", filename);
+        const filePath = uploadPath(filename);
         
         if (!fs.existsSync(filePath)) {
             return res.status(404).json({ error: "File not found on this peer" });

@@ -1,4 +1,4 @@
-# 🚀 PeerX - Decentralized Cloud Storage
+# 🚀 PeerX
 
 > A secure, peer-to-peer file sharing platform with end-to-end encryption for local networks.
 
@@ -164,6 +164,7 @@ Contributions are welcome! Please fork the repo, create a feature branch, and op
 
 This project is licensed under the MIT License.
 
+
 ---
 
 ## 👤 Author
@@ -175,6 +176,5 @@ This project is licensed under the MIT License.
 
 <div align="center">
 
-**Star ⭐ this repo if you find it useful!**
 
 </div>
